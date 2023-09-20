@@ -1,0 +1,9 @@
+Outline of Design:
+
+1. Create an AWS Lambda function to pull data from the website API every day/hour as needed (python code of Lambda in "lambda.py").
+
+2. Use a S3 bucket as the storage place for the pulled data. Each pull of data is in a new partition/folder.
+
+3. Use AWS Glue to catalog the data in S3.
+
+4. Use Athena to run SQL query to query the data in S3 and find out what we need, see "questions_and_answers" file for sample SQL queries.

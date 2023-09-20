@@ -1,0 +1,33 @@
+Question 1: Provide a SQL query that will answer a question of your choosing about the data.
+
+Answer:
+1) to get the median age of the vehicles:
+
+SELECT
+  percentile_approx(EXTRACT(YEAR FROM CURRENT_DATE) - EXTRACT(YEAR FROM "Hack Up Date"), 0.5) AS median_age
+FROM
+  fhv_active_data;
+
+2) to get stats by region of vehicle manufacturer?
+
+SELECT
+  SUBSTRING("Name", CHARINDEX('-', "Name") + 2) AS manufacturer_region,
+  COUNT(*) AS vehicle_count,
+  MAX(EXTRACT(YEAR FROM "Expiration Date")) AS max_expiration_year,
+  MIN(EXTRACT(YEAR FROM "Expiration Date")) AS min_expiration_year
+FROM
+  fhv_active_data
+GROUP BY
+  SUBSTRING("Name", CHARINDEX('-', "Name") + 2)
+ORDER BY
+  vehicle_count DESC;
+
+Question 2: Explain your ratonale for your approach to this task.
+
+Answer:
+I wanted to design a cloud based solution that is simple and scalable and cost efficient. AWS lambda is relatively simply to set up as a basic data ETL solution, and it is serverless and can automatically scale. S3 is a popular storage service that is affordable and highly available. Athena is a tool that can conveniently be used to connect to S3 and query data from it.
+
+Question 3: What else would you do if you had more time?
+
+Answer:
+This task may be a simplified use-case. In actual production, the data pipeline might be more complex than this. So if given more time, I would think into how to build more complex pipelines if necessary to handle larger tasks. For example, Lambda function has a limit of 15mins running, so if the actual task takes longer than this to run, other services will have to be used instead of Lambda for the pipeline.
